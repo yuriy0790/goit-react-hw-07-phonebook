@@ -13,14 +13,6 @@ import { Container } from './Container/Container.styled';
 export default function App() {
   const contacts = useSelector(state => state.contacts);
 
-  // const [contacts, setContacts] = useState(
-  //   JSON.parse(window.localStorage.getItem('contacts')) ?? []
-  // );
-
-  // useEffect(() => {
-  //   window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
-
   const countTotalContacts = () => {
     return contacts.length;
   };
