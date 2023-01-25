@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteContact, getContacts } from 'services/contactsAPI';
+import { deleteContact, getContacts, postContact } from 'services/contactsAPI';
+
 const contactsInitialState = { contacts: [], isLoading: false, error: null };
 
 const contactsSlice = createSlice({
@@ -8,11 +9,7 @@ const contactsSlice = createSlice({
   // Початковий стан редюсера слайсу
   initialState: contactsInitialState,
   // Об'єкт редюсерів
-  reducers: {
-    addContact(state, { payload }) {
-      return [...state, payload];
-    },
-  },
+  reducers: {},
   extraReducers: builder =>
     builder
       //get
@@ -42,11 +39,24 @@ const contactsSlice = createSlice({
       .addCase(delContact.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
+      })
+      //add
+      .addCase(addContact.pending, (state, action) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.contacts = [...state.contacts, action.payload];
+        state.isLoading = false;
+      })
+      .addCase(addContact.rejected, (state, action) => {
+        state.error = action.payload;
+        state.isLoading = false;
       }),
 });
 
 // Генератори екшенів
-export const { addContact } = contactsSlice.actions;
+
 // Редюсер слайсу
 export const contactsReducer = contactsSlice.reducer;
 
@@ -68,6 +78,18 @@ export const delContact = createAsyncThunk(
   async (contactId, thunkApi) => {
     try {
       const contacts = await deleteContact(contactId);
+      return contacts;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addContact = createAsyncThunk(
+  'contacts/addContacts',
+  async (newContact, thunkApi) => {
+    try {
+      const contacts = await postContact(newContact);
       return contacts;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);

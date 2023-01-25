@@ -8,7 +8,7 @@ import { addContact } from 'redux/contactsSlice';
 
 export default function AddContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts.contacts);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -32,12 +32,12 @@ export default function AddContactForm() {
 
   const handleSubmit = event => {
     event.preventDefault();
-
+    console.log(contacts);
     const existingName = contacts.find(
       el => el.name.toLowerCase() === name.toLowerCase()
     );
 
-    const existingNumber = contacts.find(el => el.number === number);
+    const existingNumber = contacts.find(el => el.phone === number);
 
     if (existingName) {
       Notiflix.Notify.failure(`"${name}" is allready in contact list`);
@@ -52,9 +52,9 @@ export default function AddContactForm() {
     }
 
     const contact = {
-      id: number,
+      // id: number,
       name: name,
-      number: number,
+      phone: number,
     };
     dispatch(addContact(contact));
 
