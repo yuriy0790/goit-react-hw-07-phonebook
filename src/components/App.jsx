@@ -1,5 +1,5 @@
 // import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { GlobalStyleComponent } from 'styles/GlobalStyles';
 
@@ -11,11 +11,12 @@ import Notification from './Notification/Notification';
 import { Container } from './Container/Container.styled';
 
 export default function App() {
+  const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts);
 
-  const countTotalContacts = () => {
-    return contacts.length;
-  };
+  // const countTotalContacts = () => {
+  //   return contacts.length;
+  // };
 
   return (
     <Container>
@@ -24,11 +25,11 @@ export default function App() {
         <ContactFilter />
       </Section>
       <Section title="Contacts">
-        {countTotalContacts() ? (
-          <ContactList />
-        ) : (
+        {/* {countTotalContacts() ? ( */}
+        <ContactList />
+        {/* ) : (
           <Notification message="There is no contacts" />
-        )}
+        )} */}
       </Section>
 
       <GlobalStyleComponent />
