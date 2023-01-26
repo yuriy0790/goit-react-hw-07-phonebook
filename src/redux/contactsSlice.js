@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteContact, getContacts, postContact } from 'services/contactsAPI';
 
-const contactsInitialState = { contacts: [], isLoading: false, error: null };
+const contactsInitialState = { contacts: [], isLoading: false, error: '' };
 
 const contactsSlice = createSlice({
   // Ім'я слайсу
@@ -13,22 +13,22 @@ const contactsSlice = createSlice({
   extraReducers: builder =>
     builder
       //get
-      .addCase(requestContacts.pending, (state, action) => {
+      .addCase(fetchContacts.pending, (state, action) => {
         state.isLoading = true;
-        state.error = null;
+        state.error = '';
       })
-      .addCase(requestContacts.fulfilled, (state, action) => {
+      .addCase(fetchContacts.fulfilled, (state, action) => {
         state.contacts = action.payload;
         state.isLoading = false;
       })
-      .addCase(requestContacts.rejected, (state, action) => {
+      .addCase(fetchContacts.rejected, (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
       })
       //del
       .addCase(delContact.pending, (state, action) => {
         state.isLoading = true;
-        state.error = null;
+        state.error = '';
       })
       .addCase(delContact.fulfilled, (state, action) => {
         state.contacts = state.contacts.filter(
@@ -43,7 +43,7 @@ const contactsSlice = createSlice({
       //add
       .addCase(addContact.pending, (state, action) => {
         state.isLoading = true;
-        state.error = null;
+        state.error = '';
       })
       .addCase(addContact.fulfilled, (state, action) => {
         state.contacts = [...state.contacts, action.payload];
@@ -61,8 +61,8 @@ const contactsSlice = createSlice({
 export const contactsReducer = contactsSlice.reducer;
 
 // санки
-export const requestContacts = createAsyncThunk(
-  'contacts/requestContacts',
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchAll',
   async (_, thunkApi) => {
     try {
       const contacts = await getContacts();
@@ -74,7 +74,7 @@ export const requestContacts = createAsyncThunk(
 );
 
 export const delContact = createAsyncThunk(
-  'contacts/deleteContacts',
+  'contacts/deleteContact',
   async (contactId, thunkApi) => {
     try {
       const contacts = await deleteContact(contactId);
@@ -86,7 +86,7 @@ export const delContact = createAsyncThunk(
 );
 
 export const addContact = createAsyncThunk(
-  'contacts/addContacts',
+  'contacts/addContact',
   async (newContact, thunkApi) => {
     try {
       const contacts = await postContact(newContact);

@@ -9,6 +9,8 @@ import { addContact } from 'redux/contactsSlice';
 export default function AddContactForm() {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts.contacts);
+  // const isLoading = useSelector(state => state.contacts.isLoading);
+  // const error = useSelector(state => state.contacts.error);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
